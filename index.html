@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 
   <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-
->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
 
   <title>Anam AI Portrait 9:16</title>
 
@@ -60,6 +58,7 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 
     /* =========================================
        STC LOGO
+       OUTSIDE ANAM IFRAME
        ========================================= */
 
     .stc-logo {
@@ -83,6 +82,7 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 
     /* =========================================
        FULLSCREEN BUTTON
+       OUTSIDE ANAM IFRAME
        ========================================= */
 
     .fullscreen-button {
@@ -161,8 +161,6 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
       box-shadow:
         0 12px 40px rgba(0, 0, 0, 0.30);
 
-      isolation: isolate;
-
       transition:
         width 0.45s ease,
         height 0.45s ease,
@@ -173,7 +171,7 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 
 
     /* =========================================
-       ANAM VIEWPORT
+       ANAM CROPPING WINDOW
        ========================================= */
 
     .anam-crop {
@@ -190,42 +188,32 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
       background: #4f008c;
 
       border-radius: 20px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
     }
 
 
     /* =========================================
        ANAM IFRAME
        
-       IMPORTANT:
-       Instead of making the iframe 190% wide,
-       use a larger virtual viewport and scale
-       it down.
-
-       This makes the avatar appear smaller
-       while keeping the 9:16 outer frame.
+       REDUCED AVATAR SIZE
+       
+       190% gives the Anam application a wider
+       viewport than the portrait window, reducing
+       the apparent avatar size while keeping the
+       outer frame at 9:16.
        ========================================= */
 
     .anam-crop iframe {
 
       position: absolute;
 
-      width: 125%;
+      width: 190%;
+
       height: 100%;
 
       left: 50%;
-      top: 50%;
+      top: 0;
 
-      transform:
-        translate(-50%, -50%)
-        scale(0.80);
-
-      transform-origin: center center;
+      transform: translateX(-50%);
 
       margin: 0;
       padding: 0;
@@ -235,9 +223,6 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
       display: block;
 
       background: #4f008c;
-
-      max-width: none;
-      max-height: none;
     }
 
 
@@ -272,22 +257,6 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 
     .portrait-container:fullscreen .anam-crop {
       border-radius: 0;
-    }
-
-
-    /* =========================================
-       FULLSCREEN IFRAME
-       ========================================= */
-
-    .portrait-container:fullscreen
-    .anam-crop iframe {
-
-      width: 125%;
-      height: 100%;
-
-      transform:
-        translate(-50%, -50%)
-        scale(0.80);
     }
 
 
@@ -355,22 +324,11 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         border-radius: 16px;
       }
 
-
-      .anam-crop iframe {
-
-        width: 125%;
-        height: 100%;
-
-        transform:
-          translate(-50%, -50%)
-          scale(0.80);
-      }
-
     }
 
 
     /* =========================================
-       SHORT / LANDSCAPE SCREEN
+       LANDSCAPE / SHORT SCREEN
        ========================================= */
 
     @media (max-height: 600px) {
@@ -388,38 +346,13 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 
     }
 
-
-    /* =========================================
-       VERY SMALL MOBILE
-       ========================================= */
-
-    @media (max-width: 380px) {
-
-      .portrait-container {
-
-        width: 92vw;
-
-        max-height: 94dvh;
-      }
-
-
-      .anam-crop iframe {
-
-        width: 125%;
-        height: 100%;
-
-        transform:
-          translate(-50%, -50%)
-          scale(0.76);
-      }
-
-    }
-
   </style>
 
 </head>
 
+
 <body>
+
 
   <!-- =======================================
        MAIN PAGE
@@ -427,66 +360,69 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 
   <main class="page">
 
-```
-<!-- =====================================
-     STC LOGO
-     ===================================== -->
 
-<img
-  class="stc-logo"
-  src="stcimages.jpg"
-  alt="stc"
->
+    <!-- =====================================
+         STC LOGO
+         OUTSIDE IFRAME
+         ===================================== -->
 
-
-<!-- =====================================
-     FULLSCREEN BUTTON
-     ===================================== -->
-
-<button
-  id="fullscreenButton"
-  class="fullscreen-button"
-  type="button"
-  aria-label="Full Screen"
-  title="Full Screen"
->
-  ⛶
-</button>
+    <img
+      class="stc-logo"
+      src="stcimages.jpg"
+      alt="stc"
+    >
 
 
-<!-- =====================================
-     9:16 PORTRAIT CONTAINER
-     ===================================== -->
+    <!-- =====================================
+         FULLSCREEN BUTTON
+         OUTSIDE IFRAME
+         ===================================== -->
 
-<section
-  id="anamPortrait"
-  class="portrait-container"
->
-
-  <!-- ===================================
-       ANAM VIEWPORT
-       =================================== -->
-
-  <div class="anam-crop">
-
-
-    <!-- ================================
-         ANAM AI AVATAR
-         ================================ -->
-
-    <iframe
-      src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
-      allow="microphone; fullscreen"
-      allowfullscreen>
-    </iframe>
+    <button
+      id="fullscreenButton"
+      class="fullscreen-button"
+      type="button"
+      aria-label="Full Screen"
+      title="Full Screen"
+    >
+      ⛶
+    </button>
 
 
-  </div>
+    <!-- =====================================
+         9:16 PORTRAIT CONTAINER
+         ===================================== -->
 
-</section>
-```
+    <section
+      id="anamPortrait"
+      class="portrait-container"
+    >
+
+      <!-- ===================================
+           ANAM CROPPING WINDOW
+           =================================== -->
+
+      <div class="anam-crop">
+
+
+        <!-- ================================
+             ANAM AI AVATAR
+             ================================ -->
+
+        <iframe
+          src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
+          allow="microphone; fullscreen"
+          allowfullscreen>
+        </iframe>
+
+
+      </div>
+
+    </section>
+
 
   </main>
+
 
   <!-- =======================================
        FULLSCREEN JAVASCRIPT
@@ -578,6 +514,7 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     );
 
   </script>
+
 
 </body>
 </html>
