@@ -5,35 +5,48 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
 
   <title>Anam AI Portrait</title>
 
   <style>
+    /* =========================================
+       GLOBAL
+       ========================================= */
+
     * {
       box-sizing: border-box;
     }
 
     html,
     body {
-      margin: 0;
       width: 100%;
-      min-height: 100vh;
+      height: 100%;
+      min-height: 100%;
+
+      margin: 0;
+      padding: 0;
+
+      overflow: hidden;
 
       background: #4f008c;
 
       font-family: Arial, sans-serif;
     }
 
-    /* =====================================
-       MAIN PAGE BACKGROUND
-       ===================================== */
+
+    /* =========================================
+       MAIN BACKGROUND
+       ========================================= */
 
     .page-background {
       position: fixed;
 
       inset: 0;
+
+      width: 100%;
+      height: 100%;
 
       background-color: #4f008c;
 
@@ -43,29 +56,59 @@
       background-size: 100px auto;
 
       z-index: 0;
+
+      pointer-events: none;
     }
 
 
-    /* =====================================
-       PORTRAIT CONTAINER
-       ===================================== */
+    /* =========================================
+       PAGE / CENTERING
+       ========================================= */
 
-    .portrait-container {
+    .page {
       position: relative;
 
       z-index: 1;
 
-      width: min(90vw, 450px);
+      width: 100%;
+      height: 100dvh;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+    }
+
+
+    /* =========================================
+       PORTRAIT CONTAINER
+       
+       ALWAYS 9:16
+       ========================================= */
+
+    .portrait-container {
+
+      position: relative;
+
+      /*
+        Width is limited by BOTH:
+        - screen width
+        - screen height
+
+        This guarantees 9:16 always fits.
+      */
+
+      width: min(
+        90vw,
+        calc(100dvh * 9 / 16)
+      );
 
       aspect-ratio: 9 / 16;
 
-      margin: 30px auto;
+      max-height: 94dvh;
 
-      /*
-        IMPORTANT:
-        Solid background hides the page logo
-        from appearing inside the iframe.
-      */
       background: #4f008c;
 
       overflow: hidden;
@@ -77,14 +120,18 @@
     }
 
 
-    /* =====================================
-       ANAM CROP
-       ===================================== */
+    /* =========================================
+       ANAM CROP AREA
+       ========================================= */
 
     .anam-crop {
+
       position: absolute;
 
       inset: 0;
+
+      width: 100%;
+      height: 100%;
 
       overflow: hidden;
 
@@ -94,11 +141,17 @@
     }
 
 
-    /* =====================================
+    /* =========================================
        ANAM IFRAME
-       ===================================== */
+       
+       Original Anam iframe:
+       720 x 480 = 3:2
+
+       Enlarged to fill portrait window.
+       ========================================= */
 
     .anam-crop iframe {
+
       position: absolute;
 
       top: 0;
@@ -111,34 +164,40 @@
 
       border: 0;
 
+      margin: 0;
+      padding: 0;
+
       display: block;
 
       background: #4f008c;
     }
 
 
-    /* =====================================
+    /* =========================================
        FULL SCREEN BUTTON
-       ===================================== */
+       ========================================= */
 
     .fullscreen-button {
+
       position: absolute;
 
-      right: 15px;
-      bottom: 15px;
+      right: 14px;
+      bottom: 14px;
 
       z-index: 20;
 
       width: 44px;
       height: 44px;
 
-      border: none;
+      padding: 0;
+
+      border: 0;
 
       border-radius: 50%;
 
       background: rgba(0, 0, 0, 0.65);
 
-      color: white;
+      color: #ffffff;
 
       font-size: 22px;
 
@@ -148,6 +207,8 @@
 
       align-items: center;
       justify-content: center;
+
+      -webkit-tap-highlight-color: transparent;
     }
 
     .fullscreen-button:hover {
@@ -155,22 +216,28 @@
     }
 
 
-    /* =====================================
-       FULL SCREEN
-       ===================================== */
+    /* =========================================
+       FULL SCREEN MODE
+       ========================================= */
 
     .portrait-container:fullscreen {
 
-      width: 100vw;
-      height: 100vh;
+      width: min(
+        100vw,
+        calc(100dvh * 9 / 16)
+      );
 
-      max-width: none;
+      height: auto;
 
-      aspect-ratio: auto;
+      max-height: 100dvh;
+
+      aspect-ratio: 9 / 16;
 
       margin: 0;
 
       border-radius: 0;
+
+      box-shadow: none;
 
       background: #4f008c;
     }
@@ -178,33 +245,54 @@
     .portrait-container:fullscreen
     .anam-crop {
 
-      width: min(100vw, 56.25vh);
-      height: 100vh;
-
-      left: 50%;
-      right: auto;
-
-      inset-block-start: 0;
-
-      transform: translateX(-50%);
-
       border-radius: 0;
-
-      background: #4f008c;
     }
 
 
-    /* =====================================
-       MOBILE
-       ===================================== */
+    /* =========================================
+       SMALL MOBILE DEVICES
+       ========================================= */
 
     @media (max-width: 600px) {
 
       .portrait-container {
 
-        width: 94vw;
+        width: min(
+          94vw,
+          calc(100dvh * 9 / 16)
+        );
 
-        margin: 20px auto;
+        max-height: 96dvh;
+
+        border-radius: 16px;
+      }
+
+      .fullscreen-button {
+
+        width: 42px;
+        height: 42px;
+
+        right: 10px;
+        bottom: 10px;
+
+        font-size: 20px;
+      }
+    }
+
+
+    /* =========================================
+       VERY SHORT SCREENS
+       ========================================= */
+
+    @media (max-height: 600px) {
+
+      .portrait-container {
+
+        height: 94dvh;
+
+        width: calc(94dvh * 9 / 16);
+
+        max-width: 94vw;
       }
     }
 
@@ -214,49 +302,59 @@
 
 <body>
 
-  <!-- =====================================
-       MAIN BACKGROUND
-       ===================================== -->
+  <!-- =========================================
+       STC MAIN BACKGROUND
+       ========================================= -->
 
   <div class="page-background"></div>
 
 
-  <!-- =====================================
-       ANAM PORTRAIT
-       ===================================== -->
+  <!-- =========================================
+       PAGE
+       ========================================= -->
 
-  <div
-    id="anamPortrait"
-    class="portrait-container"
-  >
+  <main class="page">
 
-    <div class="anam-crop">
+    <!-- =======================================
+         ANAM PORTRAIT
+         ======================================= -->
 
-      <iframe
-        src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
-        width="720"
-        height="480"
-        allow="microphone; fullscreen"
-        allowfullscreen>
-      </iframe>
-
-    </div>
-
-
-    <!-- FULL SCREEN BUTTON -->
-
-    <button
-      id="fullscreenButton"
-      class="fullscreen-button"
-      type="button"
-      title="Full Screen"
-      aria-label="Full Screen"
+    <section
+      id="anamPortrait"
+      class="portrait-container"
     >
-      ⛶
-    </button>
 
-  </div>
+      <div class="anam-crop">
 
+        <iframe
+          src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
+          allow="microphone; fullscreen"
+          allowfullscreen>
+        </iframe>
+
+      </div>
+
+
+      <!-- FULL SCREEN -->
+
+      <button
+        id="fullscreenButton"
+        class="fullscreen-button"
+        type="button"
+        aria-label="Full Screen"
+        title="Full Screen"
+      >
+        ⛶
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================
+       JAVASCRIPT
+       ========================================= -->
 
   <script>
 
@@ -266,6 +364,10 @@
     const fullscreenButton =
       document.getElementById("fullscreenButton");
 
+
+    /* -----------------------------------------
+       FULL SCREEN
+       ----------------------------------------- */
 
     fullscreenButton.addEventListener(
       "click",
@@ -296,6 +398,10 @@
     );
 
 
+    /* -----------------------------------------
+       CHANGE BUTTON ICON
+       ----------------------------------------- */
+
     document.addEventListener(
       "fullscreenchange",
       () => {
@@ -307,12 +413,22 @@
           fullscreenButton.title =
             "Exit Full Screen";
 
+          fullscreenButton.setAttribute(
+            "aria-label",
+            "Exit Full Screen"
+          );
+
         } else {
 
           fullscreenButton.textContent = "⛶";
 
           fullscreenButton.title =
             "Full Screen";
+
+          fullscreenButton.setAttribute(
+            "aria-label",
+            "Full Screen"
+          );
 
         }
 
