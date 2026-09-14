@@ -58,7 +58,6 @@
 
     /* =========================================
        STC LOGO
-       OUTSIDE ANAM IFRAME
        ========================================= */
 
     .stc-logo {
@@ -72,7 +71,6 @@
 
       z-index: 1000;
 
-      /* Convert logo to white */
       filter: brightness(0) invert(1);
 
       pointer-events: none;
@@ -83,7 +81,6 @@
 
     /* =========================================
        FULLSCREEN BUTTON
-       OUTSIDE IFRAME
        ========================================= */
 
     .fullscreen-button {
@@ -123,13 +120,10 @@
         transform 0.25s ease;
     }
 
-
     .fullscreen-button:hover {
       background: rgba(0, 0, 0, 0.60);
-
       transform: scale(1.08);
     }
-
 
     .fullscreen-button:active {
       transform: scale(0.95);
@@ -179,8 +173,7 @@
 
       position: absolute;
 
-      top: 0;
-      left: 0;
+      inset: 0;
 
       width: 100%;
       height: 100%;
@@ -196,20 +189,13 @@
     /* =========================================
        ANAM IFRAME
        
-       Original Anam iframe:
-       720 x 480 = 3:2
+       IMPORTANT:
+       Keep the original 3:2 proportions.
 
-       Portrait target:
-       9:16
+       The iframe fills the portrait height.
+       Only the left/right sides are cropped.
 
-       Horizontal crop:
-       266.67%
-
-       Additional vertical zoom:
-       115%
-
-       Vertical positioning:
-       -7%
+       NO additional vertical zoom.
        ========================================= */
 
     .anam-crop iframe {
@@ -217,28 +203,32 @@
       position: absolute;
 
       /*
-        Horizontal zoom/crop
+        Fill the portrait container vertically.
+      */
+      top: 0;
+
+      height: 100%;
+
+      /*
+        Original iframe aspect ratio:
+        720 / 480 = 1.5
+
+        Portrait:
+        9 / 16 = 0.5625
+
+        Required iframe width:
+        1.5 / 0.5625 = 2.6667
+
+        Therefore:
+        266.67%
       */
       width: 266.67%;
 
       /*
-        Additional vertical zoom
-      */
-      height: 115%;
-
-      /*
-        Center horizontally
+        Center horizontally.
       */
       left: 50%;
 
-      /*
-        Move avatar slightly upward
-      */
-      top: -7%;
-
-      /*
-        Keep iframe centered
-      */
       transform: translateX(-50%);
 
       margin: 0;
@@ -253,7 +243,7 @@
 
 
     /* =========================================
-       FULLSCREEN PORTRAIT
+       FULLSCREEN
        ========================================= */
 
     .portrait-container:fullscreen {
@@ -387,10 +377,7 @@
   <main class="page">
 
 
-    <!-- =====================================
-         STC LOGO
-         OUTSIDE IFRAME
-         ===================================== -->
+    <!-- STC LOGO -->
 
     <img
       class="stc-logo"
@@ -399,10 +386,7 @@
     >
 
 
-    <!-- =====================================
-         FULLSCREEN BUTTON
-         OUTSIDE IFRAME
-         ===================================== -->
+    <!-- FULLSCREEN BUTTON -->
 
     <button
       id="fullscreenButton"
@@ -424,23 +408,13 @@
       class="portrait-container"
     >
 
-      <!-- ===================================
-           ANAM CROPPING WINDOW
-           =================================== -->
-
       <div class="anam-crop">
-
-
-        <!-- ================================
-             ANAM AI
-             ================================ -->
 
         <iframe
           src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
           allow="microphone; fullscreen"
           allowfullscreen>
         </iframe>
-
 
       </div>
 
@@ -463,10 +437,6 @@
       document.getElementById("fullscreenButton");
 
 
-    /* =====================================
-       FULLSCREEN BUTTON
-       ===================================== */
-
     fullscreenButton.addEventListener(
       "click",
       async () => {
@@ -477,9 +447,7 @@
 
             await portrait.requestFullscreen();
 
-          }
-
-          else {
+          } else {
 
             await document.exitFullscreen();
 
@@ -500,10 +468,6 @@
     );
 
 
-    /* =====================================
-       FULLSCREEN STATE
-       ===================================== */
-
     document.addEventListener(
       "fullscreenchange",
       () => {
@@ -520,9 +484,7 @@
             "Exit Full Screen"
           );
 
-        }
-
-        else {
+        } else {
 
           fullscreenButton.textContent = "⛶";
 
