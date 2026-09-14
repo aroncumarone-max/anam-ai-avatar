@@ -1,176 +1,139 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>STC AI Avatar</title>
+  <title>Anam AI Portrait 9:16</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
 
     html,
     body {
-      width: 100%;
-      height: 100%;
       margin: 0;
-      padding: 0;
-    }
-
-    body {
+      width: 100%;
+      min-height: 100%;
       background: #4f008c;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      overflow: hidden;
+      font-family: Arial, sans-serif;
     }
 
-
-    /* =========================================
-       9:16 PORTRAIT FRAME
-       ========================================= */
-
-    .avatar-frame {
-
+    /* Main portrait container - 9:16 */
+    .portrait-container {
       position: relative;
 
       width: min(90vw, 450px);
-
       aspect-ratio: 9 / 16;
 
-      background-color: #4f008c;
+      margin: 30px auto;
 
-      background-image: url("stcimages.jpg");
-
-      background-repeat: no-repeat;
-
-      background-position: top 18px left 18px;
-
-      background-size: 90px auto;
-
-      border-radius: 28px;
+      background: #4f008c;
 
       overflow: hidden;
+
+      border-radius: 20px;
 
       box-shadow:
         0 10px 35px rgba(0, 0, 0, 0.30);
     }
 
-
-    /* =========================================
-       ANAM CROPPED PLAYER
-       ========================================= */
-
-    .anam-crop {
-
-      position: absolute;
-
-      inset: 0;
-
-      overflow: hidden;
-
-      border-radius: 28px;
-    }
-
-
-    .anam-crop iframe {
-
-      position: absolute;
-
-      width: 177.78%;
-
-      height: 100%;
-
-      left: 50%;
-
-      top: 0;
-
-      transform: translateX(-50%);
-
-      border: 0;
-
-      margin: 0;
-
-      padding: 0;
-
-      display: block;
-
-      background: #4f008c;
-    }
-
-
-    /* =========================================
-       LOGO BACKGROUND LAYER
-       ========================================= */
-
-    .logo-layer {
+    /*
+      STC LOGO
+      Uses filename only:
+      stcimages.jpg
+    */
+    .portrait-container::before {
+      content: "";
 
       position: absolute;
 
       top: 18px;
-
       left: 18px;
 
       width: 90px;
-
       height: 45px;
 
       background-image: url("stcimages.jpg");
-
       background-repeat: no-repeat;
-
-      background-position: center;
-
+      background-position: left center;
       background-size: contain;
+
+      /*
+        Makes a dark logo appear approximately white.
+        If your JPG already contains a white logo,
+        you can remove this filter.
+      */
+      filter:
+        brightness(0)
+        invert(1);
 
       z-index: 10;
 
       pointer-events: none;
     }
 
+    /*
+      Crop area.
+
+      Original Anam iframe = 720 x 480
+      Aspect ratio = 3:2
+
+      Portrait container = 9:16
+
+      Therefore the iframe is enlarged horizontally
+      to fill the portrait window and the sides are cropped.
+    */
+    .anam-crop {
+      position: absolute;
+
+      inset: 0;
+
+      overflow: hidden;
+
+      border-radius: 20px;
+    }
+
+    .anam-crop iframe {
+      position: absolute;
+
+      top: 0;
+      left: 50%;
+
+      width: 177.78%;
+      height: 100%;
+
+      transform: translateX(-50%);
+
+      border: 0;
+
+      display: block;
+
+      background: #4f008c;
+    }
   </style>
-
 </head>
-
 
 <body>
 
-
-  <div class="avatar-frame">
-
-
-    <!-- STC LOGO -->
-
-    <div class="logo-layer"></div>
-
-
-    <!-- ANAM AI AVATAR -->
+  <div class="portrait-container">
 
     <div class="anam-crop">
 
       <iframe
         src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
-        allow="microphone; autoplay"
+        width="720"
+        height="480"
+        allow="microphone"
         allowfullscreen>
       </iframe>
 
     </div>
 
-
   </div>
 
-
 </body>
-
 </html>
+```
