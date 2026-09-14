@@ -10,7 +10,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Anam AI 9:16 Portrait</title>
+  <title>STC AI Avatar</title>
 
   <style>
 
@@ -41,7 +41,7 @@
        9:16 PORTRAIT FRAME
        ========================================= */
 
-    .portrait {
+    .avatar-frame {
 
       position: relative;
 
@@ -49,27 +49,30 @@
 
       aspect-ratio: 9 / 16;
 
-      background: #4f008c;
+      background-color: #4f008c;
+
+      background-image: url("stcimages.jpg");
+
+      background-repeat: no-repeat;
+
+      background-position: top 18px left 18px;
+
+      background-size: 90px auto;
+
+      border-radius: 28px;
 
       overflow: hidden;
 
-      /* Smooth rounded edges */
-      border-radius: 24px;
-
-      /* Prevent iframe from escaping corners */
-      clip-path: inset(0 round 24px);
-
-      /* Optional subtle shadow */
       box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.25);
+        0 10px 35px rgba(0, 0, 0, 0.30);
     }
 
 
     /* =========================================
-       CROP AREA
+       ANAM CROPPED PLAYER
        ========================================= */
 
-    .crop {
+    .anam-crop {
 
       position: absolute;
 
@@ -77,15 +80,11 @@
 
       overflow: hidden;
 
-      border-radius: 24px;
+      border-radius: 28px;
     }
 
 
-    /* =========================================
-       ANAM IFRAME
-       ========================================= */
-
-    .crop iframe {
+    .anam-crop iframe {
 
       position: absolute;
 
@@ -110,6 +109,36 @@
       background: #4f008c;
     }
 
+
+    /* =========================================
+       LOGO BACKGROUND LAYER
+       ========================================= */
+
+    .logo-layer {
+
+      position: absolute;
+
+      top: 18px;
+
+      left: 18px;
+
+      width: 90px;
+
+      height: 45px;
+
+      background-image: url("stcimages.jpg");
+
+      background-repeat: no-repeat;
+
+      background-position: center;
+
+      background-size: contain;
+
+      z-index: 10;
+
+      pointer-events: none;
+    }
+
   </style>
 
 </head>
@@ -118,9 +147,17 @@
 <body>
 
 
-  <div class="portrait">
+  <div class="avatar-frame">
 
-    <div class="crop">
+
+    <!-- STC LOGO -->
+
+    <div class="logo-layer"></div>
+
+
+    <!-- ANAM AI AVATAR -->
+
+    <div class="anam-crop">
 
       <iframe
         src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
@@ -129,6 +166,7 @@
       </iframe>
 
     </div>
+
 
   </div>
 
