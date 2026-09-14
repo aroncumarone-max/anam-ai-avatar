@@ -1,13 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+
+>
 
   <title>Anam AI Portrait 9:16</title>
 
@@ -58,7 +60,6 @@
 
     /* =========================================
        STC LOGO
-       OUTSIDE ANAM IFRAME
        ========================================= */
 
     .stc-logo {
@@ -82,7 +83,6 @@
 
     /* =========================================
        FULLSCREEN BUTTON
-       OUTSIDE ANAM IFRAME
        ========================================= */
 
     .fullscreen-button {
@@ -194,12 +194,7 @@
     /* =========================================
        ANAM IFRAME
        
-       REDUCED AVATAR SIZE
-       
-       190% gives the Anam application a wider
-       viewport than the portrait window, reducing
-       the apparent avatar size while keeping the
-       outer frame at 9:16.
+       ORIGINAL 190% WIDTH RETAINED
        ========================================= */
 
     .anam-crop iframe {
@@ -223,6 +218,35 @@
       display: block;
 
       background: #4f008c;
+
+      /*
+       * PRE-CALL BLUR
+       *
+       * The iframe starts blurred.
+       * JavaScript removes this class when
+       * the Anam frame reports that the call/session
+       * has started.
+       */
+
+      filter: blur(12px);
+
+      -webkit-filter: blur(12px);
+
+      transition:
+        filter 0.8s ease,
+        -webkit-filter 0.8s ease;
+    }
+
+
+    /* =========================================
+       AVATAR ACTIVE / CALL STARTED
+       ========================================= */
+
+    .anam-crop.call-started iframe {
+
+      filter: blur(0);
+
+      -webkit-filter: blur(0);
     }
 
 
@@ -350,9 +374,7 @@
 
 </head>
 
-
 <body>
-
 
   <!-- =======================================
        MAIN PAGE
@@ -360,72 +382,73 @@
 
   <main class="page">
 
+```
+<!-- =====================================
+     STC LOGO
+     ===================================== -->
 
-    <!-- =====================================
-         STC LOGO
-         OUTSIDE IFRAME
-         ===================================== -->
-
-    <img
-      class="stc-logo"
-      src="stcimages.jpg"
-      alt="stc"
-    >
-
-
-    <!-- =====================================
-         FULLSCREEN BUTTON
-         OUTSIDE IFRAME
-         ===================================== -->
-
-    <button
-      id="fullscreenButton"
-      class="fullscreen-button"
-      type="button"
-      aria-label="Full Screen"
-      title="Full Screen"
-    >
-      ⛶
-    </button>
+<img
+  class="stc-logo"
+  src="stcimages.jpg"
+  alt="stc"
+>
 
 
-    <!-- =====================================
-         9:16 PORTRAIT CONTAINER
-         ===================================== -->
+<!-- =====================================
+     FULLSCREEN BUTTON
+     ===================================== -->
 
-    <section
-      id="anamPortrait"
-      class="portrait-container"
-    >
-
-      <!-- ===================================
-           ANAM CROPPING WINDOW
-           =================================== -->
-
-      <div class="anam-crop">
-
-
-        <!-- ================================
-             ANAM AI AVATAR
-             ================================ -->
-
-        <iframe
-          src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
-          allow="microphone; fullscreen"
-          allowfullscreen>
-        </iframe>
+<button
+  id="fullscreenButton"
+  class="fullscreen-button"
+  type="button"
+  aria-label="Full Screen"
+  title="Full Screen"
+>
+  ⛶
+</button>
 
 
-      </div>
+<!-- =====================================
+     9:16 PORTRAIT CONTAINER
+     ===================================== -->
 
-    </section>
+<section
+  id="anamPortrait"
+  class="portrait-container"
+>
 
+  <!-- ===================================
+       ANAM CROPPING WINDOW
+       =================================== -->
+
+  <div
+    id="anamCrop"
+    class="anam-crop"
+  >
+
+
+    <!-- ================================
+         ANAM AI AVATAR
+         ================================ -->
+
+    <iframe
+      id="anamFrame"
+      src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
+      allow="microphone; fullscreen"
+      allowfullscreen>
+    </iframe>
+
+
+  </div>
+
+</section>
+```
 
   </main>
 
-
   <!-- =======================================
-       FULLSCREEN JAVASCRIPT
+       JAVASCRIPT
        ======================================= -->
 
   <script>
@@ -435,6 +458,101 @@
 
     const fullscreenButton =
       document.getElementById("fullscreenButton");
+
+    const anamCrop =
+      document.getElementById("anamCrop");
+
+    const anamFrame =
+      document.getElementById("anamFrame");
+
+
+    /* =====================================
+       ANAM CALL START DETECTION
+       ===================================== */
+
+    /*
+     * The Anam iframe is cross-origin, so the
+     * parent page cannot directly inspect its DOM.
+     *
+     * Instead, listen for messages sent by the
+     * embedded Anam application.
+     */
+
+    window.addEventListener("message", (event) => {
+
+      /*
+       * Only accept messages originating from Anam.
+       */
+
+      if (
+        !event.origin.includes("anam.ai")
+      ) {
+        return;
+      }
+
+
+      let message = event.data;
+
+
+      /*
+       * Convert message to searchable text.
+       */
+
+      let messageText = "";
+
+      try {
+
+        if (typeof message === "string") {
+
+          messageText =
+            message.toLowerCase();
+
+        }
+
+        else {
+
+          messageText =
+            JSON.stringify(message).toLowerCase();
+
+        }
+
+      }
+
+      catch (error) {
+
+        return;
+
+      }
+
+
+      /*
+       * Look for common session / call / connection
+       * indications.
+       *
+       * When detected, remove the blur.
+       */
+
+      const callStarted =
+        messageText.includes("call_started") ||
+        messageText.includes("call-started") ||
+        messageText.includes("callstarted") ||
+        messageText.includes("session_started") ||
+        messageText.includes("session-started") ||
+        messageText.includes("sessionstarted") ||
+        messageText.includes("connected") ||
+        messageText.includes("connection_established") ||
+        messageText.includes("connected");
+
+
+      if (callStarted) {
+
+        anamCrop.classList.add(
+          "call-started"
+        );
+
+      }
+
+    });
 
 
     /* =====================================
@@ -513,8 +631,23 @@
       }
     );
 
-  </script>
 
+    /* =====================================
+       IFRAME LOAD
+       ===================================== */
+
+    anamFrame.addEventListener(
+      "load",
+      () => {
+
+        console.log(
+          "Anam iframe loaded. Avatar remains blurred until call starts."
+        );
+
+      }
+    );
+
+  </script>
 
 </body>
 </html>
