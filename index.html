@@ -58,6 +58,7 @@
 
     /* =========================================
        STC LOGO
+       OUTSIDE ANAM IFRAME
        ========================================= */
 
     .stc-logo {
@@ -81,6 +82,7 @@
 
     /* =========================================
        FULLSCREEN BUTTON
+       OUTSIDE ANAM IFRAME
        ========================================= */
 
     .fullscreen-button {
@@ -120,10 +122,13 @@
         transform 0.25s ease;
     }
 
+
     .fullscreen-button:hover {
       background: rgba(0, 0, 0, 0.60);
+
       transform: scale(1.08);
     }
+
 
     .fullscreen-button:active {
       transform: scale(0.95);
@@ -189,45 +194,24 @@
     /* =========================================
        ANAM IFRAME
        
-       IMPORTANT:
-       Keep the original 3:2 proportions.
-
-       The iframe fills the portrait height.
-       Only the left/right sides are cropped.
-
-       NO additional vertical zoom.
+       REDUCED AVATAR SIZE
+       
+       190% gives the Anam application a wider
+       viewport than the portrait window, reducing
+       the apparent avatar size while keeping the
+       outer frame at 9:16.
        ========================================= */
 
     .anam-crop iframe {
 
       position: absolute;
 
-      /*
-        Fill the portrait container vertically.
-      */
-      top: 0;
+      width: 190%;
 
       height: 100%;
 
-      /*
-        Original iframe aspect ratio:
-        720 / 480 = 1.5
-
-        Portrait:
-        9 / 16 = 0.5625
-
-        Required iframe width:
-        1.5 / 0.5625 = 2.6667
-
-        Therefore:
-        266.67%
-      */
-      width: 266.67%;
-
-      /*
-        Center horizontally.
-      */
       left: 50%;
+      top: 0;
 
       transform: translateX(-50%);
 
@@ -243,7 +227,7 @@
 
 
     /* =========================================
-       FULLSCREEN
+       FULLSCREEN PORTRAIT
        ========================================= */
 
     .portrait-container:fullscreen {
@@ -377,7 +361,10 @@
   <main class="page">
 
 
-    <!-- STC LOGO -->
+    <!-- =====================================
+         STC LOGO
+         OUTSIDE IFRAME
+         ===================================== -->
 
     <img
       class="stc-logo"
@@ -386,7 +373,10 @@
     >
 
 
-    <!-- FULLSCREEN BUTTON -->
+    <!-- =====================================
+         FULLSCREEN BUTTON
+         OUTSIDE IFRAME
+         ===================================== -->
 
     <button
       id="fullscreenButton"
@@ -408,13 +398,23 @@
       class="portrait-container"
     >
 
+      <!-- ===================================
+           ANAM CROPPING WINDOW
+           =================================== -->
+
       <div class="anam-crop">
+
+
+        <!-- ================================
+             ANAM AI AVATAR
+             ================================ -->
 
         <iframe
           src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
           allow="microphone; fullscreen"
           allowfullscreen>
         </iframe>
+
 
       </div>
 
@@ -437,6 +437,10 @@
       document.getElementById("fullscreenButton");
 
 
+    /* =====================================
+       FULLSCREEN BUTTON
+       ===================================== */
+
     fullscreenButton.addEventListener(
       "click",
       async () => {
@@ -447,7 +451,9 @@
 
             await portrait.requestFullscreen();
 
-          } else {
+          }
+
+          else {
 
             await document.exitFullscreen();
 
@@ -468,6 +474,10 @@
     );
 
 
+    /* =====================================
+       FULLSCREEN STATE
+       ===================================== */
+
     document.addEventListener(
       "fullscreenchange",
       () => {
@@ -484,7 +494,9 @@
             "Exit Full Screen"
           );
 
-        } else {
+        }
+
+        else {
 
           fullscreenButton.textContent = "⛶";
 
