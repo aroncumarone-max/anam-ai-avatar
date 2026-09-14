@@ -72,7 +72,7 @@
 
       z-index: 1000;
 
-      /* Converts dark logo to white */
+      /* Convert logo to white */
       filter: brightness(0) invert(1);
 
       pointer-events: none;
@@ -123,11 +123,13 @@
         transform 0.25s ease;
     }
 
+
     .fullscreen-button:hover {
       background: rgba(0, 0, 0, 0.60);
 
       transform: scale(1.08);
     }
+
 
     .fullscreen-button:active {
       transform: scale(0.95);
@@ -142,9 +144,6 @@
 
       position: relative;
 
-      /*
-        Maintain exact 9:16 ratio
-      */
       width: min(
         90vw,
         calc(92dvh * 9 / 16)
@@ -197,36 +196,49 @@
     /* =========================================
        ANAM IFRAME
        
-       Original iframe:
+       Original Anam iframe:
        720 x 480 = 3:2
 
-       Target:
+       Portrait target:
        9:16
 
-       Therefore iframe is enlarged horizontally
-       and the left/right portions are cropped.
+       Horizontal crop:
+       266.67%
+
+       Additional vertical zoom:
+       115%
+
+       Vertical positioning:
+       -7%
        ========================================= */
 
     .anam-crop iframe {
 
       position: absolute;
 
-      top: 0;
+      /*
+        Horizontal zoom/crop
+      */
+      width: 266.67%;
 
       /*
-        720 / 480 = 1.5
-
-        1.5 / (9 / 16) = 2.6667
-
-        Therefore:
-        266.67% width
+        Additional vertical zoom
       */
+      height: 115%;
 
+      /*
+        Center horizontally
+      */
       left: 50%;
 
-      width: 266.67%;
-      height: 100%;
+      /*
+        Move avatar slightly upward
+      */
+      top: -7%;
 
+      /*
+        Keep iframe centered
+      */
       transform: translateX(-50%);
 
       margin: 0;
@@ -377,7 +389,7 @@
 
     <!-- =====================================
          STC LOGO
-         Completely outside iframe
+         OUTSIDE IFRAME
          ===================================== -->
 
     <img
@@ -389,7 +401,7 @@
 
     <!-- =====================================
          FULLSCREEN BUTTON
-         Completely outside iframe
+         OUTSIDE IFRAME
          ===================================== -->
 
     <button
@@ -413,21 +425,20 @@
     >
 
       <!-- ===================================
-           CROPPING WINDOW
+           ANAM CROPPING WINDOW
            =================================== -->
 
       <div class="anam-crop">
 
 
         <!-- ================================
-             ANAM AI IFRAME
+             ANAM AI
              ================================ -->
 
         <iframe
           src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
           allow="microphone; fullscreen"
-          allowfullscreen
-        >
+          allowfullscreen>
         </iframe>
 
 
@@ -452,25 +463,21 @@
       document.getElementById("fullscreenButton");
 
 
+    /* =====================================
+       FULLSCREEN BUTTON
+       ===================================== */
+
     fullscreenButton.addEventListener(
       "click",
       async () => {
 
         try {
 
-          /*
-            Enter fullscreen
-          */
-
           if (!document.fullscreenElement) {
 
             await portrait.requestFullscreen();
 
           }
-
-          /*
-            Exit fullscreen
-          */
 
           else {
 
@@ -493,9 +500,9 @@
     );
 
 
-    /*
-      Update fullscreen button
-    */
+    /* =====================================
+       FULLSCREEN STATE
+       ===================================== */
 
     document.addEventListener(
       "fullscreenchange",
