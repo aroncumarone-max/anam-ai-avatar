@@ -1,8 +1,8 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -10,7 +10,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Anam AI Portrait Avatar</title>
+  <title>Anam AI 9:16 Portrait</title>
 
   <style>
 
@@ -37,12 +37,11 @@
     }
 
 
-    /* ==========================================
-       PORTRAIT VIEWPORT
-       EXACT 9:16
-       ========================================== */
+    /* =========================================
+       9:16 PORTRAIT WINDOW
+       ========================================= */
 
-    .portrait-frame {
+    .portrait {
 
       position: relative;
 
@@ -53,40 +52,48 @@
       background: #4f008c;
 
       overflow: hidden;
+
+      margin: auto;
     }
 
 
-    /* ==========================================
-       ANAM PLAYER
-       LANDSCAPE SOURCE
-       ========================================== */
+    /* =========================================
+       CROP AREA
+       ========================================= */
 
-    .anam-crop {
+    .crop {
 
       position: absolute;
 
-      width: 177.78%;
-      height: 100%;
-
-      left: 50%;
-      top: 0;
-
-      transform: translateX(-50%);
+      inset: 0;
 
       overflow: hidden;
     }
 
 
-    /* ==========================================
-       IFRAME
-       ========================================== */
+    /* =========================================
+       ANAM IFRAME
+       ========================================= */
 
-    .anam-crop iframe {
+    .crop iframe {
 
-      width: 100%;
+      position: absolute;
+
+      width: 177.78%;
+
       height: 100%;
 
+      left: 50%;
+
+      top: 0;
+
+      transform: translateX(-50%);
+
       border: 0;
+
+      margin: 0;
+
+      padding: 0;
 
       display: block;
 
@@ -101,9 +108,9 @@
 <body>
 
 
-  <div class="portrait-frame">
+  <div class="portrait">
 
-    <div class="anam-crop">
+    <div class="crop">
 
       <iframe
         src="https://lab.anam.ai/frame/3d31783d-0b54-490c-971b-654cdc4a4dc5"
@@ -119,4 +126,3 @@
 </body>
 
 </html>
-```
