@@ -11,10 +11,6 @@
   <title>Anam AI Portrait</title>
 
   <style>
-    /* =========================================
-       GLOBAL
-       ========================================= */
-
     * {
       box-sizing: border-box;
     }
@@ -23,8 +19,6 @@
     body {
       width: 100%;
       height: 100%;
-      min-height: 100%;
-
       margin: 0;
       padding: 0;
 
@@ -36,40 +30,39 @@
     }
 
 
-    /* =========================================
-       MAIN BACKGROUND
-       ========================================= */
+    /* =====================================
+       STC LOGO
+       OUTSIDE THE IFRAME
+       TOP LEFT
+       ===================================== */
 
-    .page-background {
+    .stc-logo {
       position: fixed;
 
-      inset: 0;
+      top: 20px;
+      left: 25px;
 
-      width: 100%;
-      height: 100%;
+      width: 100px;
+      height: auto;
 
-      background-color: #4f008c;
+      z-index: 100;
 
-      background-image: url("stcimages.jpg");
-      background-repeat: no-repeat;
-      background-position: 25px 25px;
-      background-size: 100px auto;
-
-      z-index: 0;
+      /*
+        White logo effect
+      */
+      filter:
+        brightness(0)
+        invert(1);
 
       pointer-events: none;
     }
 
 
-    /* =========================================
-       PAGE / CENTERING
-       ========================================= */
+    /* =====================================
+       PAGE
+       ===================================== */
 
     .page {
-      position: relative;
-
-      z-index: 1;
-
       width: 100%;
       height: 100dvh;
 
@@ -82,27 +75,17 @@
     }
 
 
-    /* =========================================
+    /* =====================================
        PORTRAIT CONTAINER
-       
-       ALWAYS 9:16
-       ========================================= */
+       9:16
+       ===================================== */
 
     .portrait-container {
-
       position: relative;
-
-      /*
-        Width is limited by BOTH:
-        - screen width
-        - screen height
-
-        This guarantees 9:16 always fits.
-      */
 
       width: min(
         90vw,
-        calc(100dvh * 9 / 16)
+        calc(94dvh * 9 / 16)
       );
 
       aspect-ratio: 9 / 16;
@@ -120,12 +103,11 @@
     }
 
 
-    /* =========================================
-       ANAM CROP AREA
-       ========================================= */
+    /* =====================================
+       ANAM CROP
+       ===================================== */
 
     .anam-crop {
-
       position: absolute;
 
       inset: 0;
@@ -141,17 +123,11 @@
     }
 
 
-    /* =========================================
+    /* =====================================
        ANAM IFRAME
-       
-       Original Anam iframe:
-       720 x 480 = 3:2
-
-       Enlarged to fill portrait window.
-       ========================================= */
+       ===================================== */
 
     .anam-crop iframe {
-
       position: absolute;
 
       top: 0;
@@ -162,23 +138,20 @@
 
       transform: translateX(-50%);
 
-      border: 0;
-
       margin: 0;
       padding: 0;
 
-      display: block;
+      border: 0;
 
-      background: #4f008c;
+      display: block;
     }
 
 
-    /* =========================================
+    /* =====================================
        FULL SCREEN BUTTON
-       ========================================= */
+       ===================================== */
 
     .fullscreen-button {
-
       position: absolute;
 
       right: 14px;
@@ -189,10 +162,7 @@
       width: 44px;
       height: 44px;
 
-      padding: 0;
-
       border: 0;
-
       border-radius: 50%;
 
       background: rgba(0, 0, 0, 0.65);
@@ -204,11 +174,8 @@
       cursor: pointer;
 
       display: flex;
-
       align-items: center;
       justify-content: center;
-
-      -webkit-tap-highlight-color: transparent;
     }
 
     .fullscreen-button:hover {
@@ -216,9 +183,9 @@
     }
 
 
-    /* =========================================
-       FULL SCREEN MODE
-       ========================================= */
+    /* =====================================
+       FULL SCREEN
+       ===================================== */
 
     .portrait-container:fullscreen {
 
@@ -233,36 +200,38 @@
 
       aspect-ratio: 9 / 16;
 
-      margin: 0;
-
       border-radius: 0;
 
       box-shadow: none;
-
-      background: #4f008c;
     }
 
     .portrait-container:fullscreen
     .anam-crop {
-
       border-radius: 0;
     }
 
 
-    /* =========================================
-       SMALL MOBILE DEVICES
-       ========================================= */
+    /* =====================================
+       MOBILE
+       ===================================== */
 
     @media (max-width: 600px) {
+
+      .stc-logo {
+        top: 12px;
+        left: 15px;
+
+        width: 80px;
+      }
 
       .portrait-container {
 
         width: min(
           94vw,
-          calc(100dvh * 9 / 16)
+          calc(94dvh * 9 / 16)
         );
 
-        max-height: 96dvh;
+        max-height: 94dvh;
 
         border-radius: 16px;
       }
@@ -280,19 +249,19 @@
     }
 
 
-    /* =========================================
-       VERY SHORT SCREENS
-       ========================================= */
+    /* =====================================
+       SHORT DESKTOP / LANDSCAPE
+       ===================================== */
 
     @media (max-height: 600px) {
 
       .portrait-container {
 
-        height: 94dvh;
+        height: 92dvh;
 
-        width: calc(94dvh * 9 / 16);
+        width: calc(92dvh * 9 / 16);
 
-        max-width: 94vw;
+        max-width: 90vw;
       }
     }
 
@@ -302,22 +271,29 @@
 
 <body>
 
-  <!-- =========================================
-       STC MAIN BACKGROUND
-       ========================================= -->
 
-  <div class="page-background"></div>
+  <!-- =====================================
+       STC LOGO
+       COMPLETELY OUTSIDE IFRAME
+       ===================================== -->
+
+  <img
+    class="stc-logo"
+    src="stcimages.jpg"
+    alt="stc"
+  >
 
 
-  <!-- =========================================
+  <!-- =====================================
        PAGE
-       ========================================= -->
+       ===================================== -->
 
   <main class="page">
 
-    <!-- =======================================
-         ANAM PORTRAIT
-         ======================================= -->
+
+    <!-- ===================================
+         ANAM AI PORTRAIT
+         =================================== -->
 
     <section
       id="anamPortrait"
@@ -335,7 +311,7 @@
       </div>
 
 
-      <!-- FULL SCREEN -->
+      <!-- FULL SCREEN BUTTON -->
 
       <button
         id="fullscreenButton"
@@ -352,9 +328,9 @@
   </main>
 
 
-  <!-- =========================================
-       JAVASCRIPT
-       ========================================= -->
+  <!-- =====================================
+       FULL SCREEN JAVASCRIPT
+       ===================================== -->
 
   <script>
 
@@ -364,10 +340,6 @@
     const fullscreenButton =
       document.getElementById("fullscreenButton");
 
-
-    /* -----------------------------------------
-       FULL SCREEN
-       ----------------------------------------- */
 
     fullscreenButton.addEventListener(
       "click",
@@ -388,7 +360,7 @@
         } catch (error) {
 
           console.error(
-            "Full screen error:",
+            "Fullscreen error:",
             error
           );
 
@@ -397,10 +369,6 @@
       }
     );
 
-
-    /* -----------------------------------------
-       CHANGE BUTTON ICON
-       ----------------------------------------- */
 
     document.addEventListener(
       "fullscreenchange",
@@ -413,22 +381,12 @@
           fullscreenButton.title =
             "Exit Full Screen";
 
-          fullscreenButton.setAttribute(
-            "aria-label",
-            "Exit Full Screen"
-          );
-
         } else {
 
           fullscreenButton.textContent = "⛶";
 
           fullscreenButton.title =
             "Full Screen";
-
-          fullscreenButton.setAttribute(
-            "aria-label",
-            "Full Screen"
-          );
 
         }
 
