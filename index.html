@@ -224,20 +224,21 @@
 
     /* =========================================
        AVATAR CONTAINER
-       
+
        EXACT SIZE:
-       WIDTH  = 480px
-       HEIGHT = 720px
+       WIDTH  = 720px
+       HEIGHT = 480px
+       RATIO  = 3:2
        ========================================= */
 
     .portrait-container {
 
       position: relative;
 
-      width: 480px;
-      height: 720px;
+      width: 720px;
+      height: 480px;
 
-      flex-shrink: 0;
+      flex: 0 0 720px;
 
       overflow: hidden;
 
@@ -254,7 +255,7 @@
 
 
     /* =========================================
-       ANAM CROPPING WINDOW
+       ANAM WINDOW
        ========================================= */
 
     .anam-crop {
@@ -270,30 +271,32 @@
 
       background: #d3d3d3;
 
-      border-radius: 20px;
+      border-radius: inherit;
 
     }
 
 
     /* =========================================
        ANAM IFRAME
-       
+
        EXACT SIZE:
-       480 × 720
+       720 × 480
        ========================================= */
 
     .anam-crop iframe {
 
       position: absolute;
 
-      width: 480px;
-      height: 720px;
+      inset: 0;
 
-      left: 50%;
-      top: 50%;
+      width: 720px;
+      height: 480px;
 
-      transform:
-        translate(-50%, -50%);
+      min-width: 720px;
+      min-height: 480px;
+
+      max-width: none;
+      max-height: none;
 
       margin: 0;
       padding: 0;
@@ -309,39 +312,25 @@
 
     /* =========================================
        FULLSCREEN MODE
+
+       EXACT SIZE:
+       720 × 480
        ========================================= */
 
     .portrait-container:fullscreen {
 
-      width: 480px;
-      height: 720px;
+      width: 720px;
+      height: 480px;
 
-      max-width: 100vw;
-      max-height: 100dvh;
+      flex: none;
 
-      margin: auto;
+      margin: 0;
 
       border-radius: 0;
 
       box-shadow: none;
 
       background: #d3d3d3;
-
-    }
-
-
-    .portrait-container:fullscreen .anam-crop {
-
-      border-radius: 0;
-
-    }
-
-
-    /* =========================================
-       FULLSCREEN BACKGROUND
-       ========================================= */
-
-    .portrait-container:fullscreen {
 
       position: fixed;
 
@@ -354,40 +343,34 @@
     }
 
 
+    .portrait-container:fullscreen .anam-crop {
+
+      border-radius: 0;
+
+    }
+
+
     /* =========================================
-       SMALL DESKTOP / TABLET
+       SMALL SCREENS
+
+       Scale the entire 720 × 480 unit.
+       Iframe remains 720 × 480.
        ========================================= */
 
-    @media (max-width: 600px) {
+    @media (max-width: 752px),
+           (max-height: 512px) {
 
       .portrait-container {
 
-        width: min(
-          480px,
-          calc(100vw - 32px)
-        );
-
-        height: min(
-          720px,
-          calc(100dvh - 32px)
-        );
-
-        border-radius: 16px;
-
-      }
-
-
-      .anam-crop iframe {
-
-        width: 480px;
-        height: 720px;
+        width: 720px;
+        height: 480px;
 
         transform:
-          translate(-50%, -50%)
           scale(
             min(
-              calc((100vw - 32px) / 480),
-              calc((100dvh - 32px) / 720)
+              calc((100vw - 32px) / 720),
+              calc((100dvh - 32px) / 480),
+              1
             )
           );
 
@@ -423,15 +406,15 @@
        VERY SMALL SCREENS
        ========================================= */
 
-    @media (max-height: 760px) {
+    @media (max-height: 340px) {
 
       .portrait-container {
 
         transform:
           scale(
             min(
-              1,
-              calc((100dvh - 24px) / 720)
+              calc((100vw - 20px) / 720),
+              calc((100dvh - 20px) / 480)
             )
           );
 
@@ -483,7 +466,9 @@
 
     <!-- =====================================
          AI AGENT
-         480 × 720
+
+         EXACT SIZE:
+         720 × 480
          ===================================== -->
 
     <section
@@ -495,8 +480,8 @@
 
         <iframe
           src="https://lab.anam.ai/frame/3ef964c0-2789-4ba5-a734-ddda2cf99ce7"
-          width="480"
-          height="720"
+          width="720"
+          height="480"
           allow="microphone; fullscreen"
           allowfullscreen>
         </iframe>
