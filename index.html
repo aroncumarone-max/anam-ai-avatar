@@ -1,592 +1,225 @@
 <!DOCTYPE html>
+
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
-
-  <title>AI Agent Portrait</title>
-
+  <title>Anam AI Avatar</title>
 
   <style>
-
-    /* =========================================
-       GLOBAL
-       ========================================= */
-
     * {
       box-sizing: border-box;
     }
 
-
     html,
     body {
-
+      margin: 0;
       width: 100%;
       height: 100%;
-
-      margin: 0;
-      padding: 0;
-
       overflow: hidden;
-
-      font-family: Arial, sans-serif;
-
-      background:
-        linear-gradient(
-          135deg,
-          #4f008c 0%,
-          #6500a8 45%,
-          #4f008c 100%
-        );
-
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0b1020;
     }
 
-
-    /* =========================================
-       MAIN PAGE
-       ========================================= */
-
-    .page {
-
-      position: relative;
-
-      width: 100%;
-      height: 100dvh;
+    /*
+      Main screen
+      Always uses a 9:16 portrait layout
+    */
+    .screen {
+      width: 100vw;
+      height: 100vh;
 
       display: flex;
-
-      align-items: center;
       justify-content: center;
+      align-items: center;
+
+      background:
+        radial-gradient(
+          circle at center,
+          #1c2742 0%,
+          #0b1020 65%
+        );
+    }
+
+    /*
+      9:16 portrait container
+
+      Desktop:
+      Height determines the size.
+
+      Mobile:
+      Width determines the size.
+    */
+    .portrait {
+      position: relative;
+
+      width: min(56.25vh, 100vw);
+      height: min(100vh, 177.7778vw);
+
+      aspect-ratio: 9 / 16;
 
       overflow: hidden;
 
-      background:
-        linear-gradient(
-          135deg,
-          #4f008c 0%,
-          #6500a8 45%,
-          #4f008c 100%
-        );
+      background: #000;
 
+      border-radius: 0;
+
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45);
     }
 
+    /*
+      Anam AI iframe
 
-    /* =========================================
-       DECORATIVE STC BACKGROUND
-       ========================================= */
-
-    .page::before {
-
-      content: "";
-
+      The iframe itself remains 9:16.
+    */
+    .avatar-frame {
       position: absolute;
 
       top: 0;
       left: 0;
 
-      width: 320px;
-      height: 220px;
-
-      background: rgba(255, 255, 255, 0.035);
-
-      clip-path: polygon(
-        0 0,
-        100% 0,
-        60% 100%,
-        0 100%
-      );
-
-      pointer-events: none;
-
-    }
-
-
-    .page::after {
-
-      content: "";
-
-      position: absolute;
-
-      right: -80px;
-      bottom: -80px;
-
-      width: 520px;
-      height: 430px;
-
-      background: rgba(255, 0, 160, 0.12);
-
-      clip-path: polygon(
-        45% 0,
-        100% 0,
-        100% 100%,
-        0 100%
-      );
-
-      pointer-events: none;
-
-    }
-
-
-    /* =========================================
-       STC LOGO
-       ========================================= */
-
-    .stc-logo {
-
-      position: fixed;
-
-      top: 35px;
-      left: 45px;
-
-      width: 108px;
-      height: auto;
-
-      z-index: 1000;
-
-      filter:
-        brightness(0)
-        invert(1);
-
-      pointer-events: none;
-
-      user-select: none;
-
-    }
-
-
-    /* =========================================
-       FULLSCREEN BUTTON
-       ========================================= */
-
-    .fullscreen-button {
-
-      position: fixed;
-
-      top: 46px;
-      right: 40px;
-
-      z-index: 1000;
-
-      width: 58px;
-      height: 58px;
-
-      padding: 0;
-
-      border: 1px solid rgba(255, 255, 255, 0.18);
-
-      border-radius: 50%;
-
-      background: rgba(0, 0, 0, 0.22);
-
-      color: #ffffff;
-
-      font-size: 25px;
-
-      cursor: pointer;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      backdrop-filter: blur(10px);
-
-      -webkit-backdrop-filter: blur(10px);
-
-      transition:
-        background 0.25s ease,
-        transform 0.25s ease;
-
-    }
-
-
-    .fullscreen-button:hover {
-
-      background: rgba(0, 0, 0, 0.42);
-
-      transform: scale(1.06);
-
-    }
-
-
-    .fullscreen-button:active {
-
-      transform: scale(0.94);
-
-    }
-
-
-    /* =========================================
-       AVATAR CONTAINER
-
-       EXACT SIZE:
-       WIDTH  = 720px
-       HEIGHT = 480px
-       RATIO  = 3:2
-       ========================================= */
-
-    .portrait-container {
-
-      position: relative;
-
-      width: 720px;
-      height: 480px;
-
-      flex: 0 0 720px;
-
-      overflow: hidden;
-
-      background: #d3d3d3;
-
-      border-radius: 20px;
-
-      box-shadow:
-        0 15px 45px rgba(0, 0, 0, 0.38);
-
-      z-index: 10;
-
-    }
-
-
-    /* =========================================
-       ANAM WINDOW
-       ========================================= */
-
-    .anam-crop {
-
-      position: absolute;
-
-      inset: 0;
-
       width: 100%;
       height: 100%;
-
-      overflow: hidden;
-
-      background: #d3d3d3;
-
-      border-radius: inherit;
-
-    }
-
-
-    /* =========================================
-       ANAM IFRAME
-
-       EXACT SIZE:
-       720 × 480
-       ========================================= */
-
-    .anam-crop iframe {
-
-      position: absolute;
-
-      inset: 0;
-
-      width: 720px;
-      height: 480px;
-
-      min-width: 720px;
-      min-height: 480px;
-
-      max-width: none;
-      max-height: none;
-
-      margin: 0;
-      padding: 0;
 
       border: 0;
 
       display: block;
 
-      background: #d3d3d3;
+      background: #000;
 
+      /*
+        Prevent iframe from adding unwanted scrolling.
+      */
+      overflow: hidden;
     }
 
+    /*
+      Optional overlay for a clean screen appearance.
+      It does NOT block microphone/avatar interaction.
+    */
+    .top-gradient {
+      position: absolute;
 
-    /* =========================================
-       FULLSCREEN MODE
+      top: 0;
+      left: 0;
 
-       EXACT SIZE:
-       720 × 480
-       ========================================= */
+      width: 100%;
+      height: 120px;
 
-    .portrait-container:fullscreen {
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.35),
+        transparent
+      );
 
-      width: 720px;
-      height: 480px;
+      pointer-events: none;
 
-      flex: none;
-
-      margin: 0;
-
-      border-radius: 0;
-
-      box-shadow: none;
-
-      background: #d3d3d3;
-
-      position: fixed;
-
-      top: 50%;
-      left: 50%;
-
-      transform:
-        translate(-50%, -50%);
-
+      z-index: 2;
     }
 
+    /*
+      Desktop information label
+    */
+    .desktop-label {
+      position: absolute;
 
-    .portrait-container:fullscreen .anam-crop {
+      top: 20px;
+      left: 20px;
 
-      border-radius: 0;
+      z-index: 3;
 
+      padding: 8px 12px;
+
+      color: white;
+
+      font-size: 12px;
+
+      background: rgba(0, 0, 0, 0.35);
+
+      border: 1px solid rgba(255, 255, 255, 0.15);
+
+      border-radius: 20px;
+
+      backdrop-filter: blur(8px);
+
+      pointer-events: none;
     }
 
+    /*
+      Mobile
+    */
+    @media (max-width: 600px) {
 
-    /* =========================================
-       SMALL SCREENS
-
-       Scale the entire 720 × 480 unit.
-       Iframe remains 720 × 480.
-       ========================================= */
-
-    @media (max-width: 752px),
-           (max-height: 512px) {
-
-      .portrait-container {
-
-        width: 720px;
-        height: 480px;
-
-        transform:
-          scale(
-            min(
-              calc((100vw - 32px) / 720),
-              calc((100dvh - 32px) / 480),
-              1
-            )
-          );
-
+      .screen {
+        background: #000;
       }
 
+      .portrait {
+        width: 100vw;
+        height: 100vh;
 
-      .stc-logo {
+        /*
+          Keep exact 9:16 ratio.
+        */
+        aspect-ratio: 9 / 16;
 
-        top: 20px;
-        left: 20px;
+        border-radius: 0;
 
-        width: 82px;
-
+        box-shadow: none;
       }
 
-
-      .fullscreen-button {
-
-        top: 18px;
-        right: 18px;
-
-        width: 46px;
-        height: 46px;
-
-        font-size: 21px;
-
+      .desktop-label {
+        display: none;
       }
-
     }
 
+    /*
+      Desktop portrait screen
+    */
+    @media (min-width: 601px) {
 
-    /* =========================================
-       VERY SMALL SCREENS
-       ========================================= */
-
-    @media (max-height: 340px) {
-
-      .portrait-container {
-
-        transform:
-          scale(
-            min(
-              calc((100vw - 20px) / 720),
-              calc((100dvh - 20px) / 480)
-            )
-          );
-
+      .portrait {
+        /*
+          Maximum portrait size:
+          9:16
+        */
+        width: min(450px, 56.25vh);
+        height: min(800px, 100vh);
       }
-
     }
-
-
   </style>
 
 </head>
 
-
 <body>
 
+  <div class="screen">
 
-  <!-- =======================================
-       MAIN PAGE
-       ======================================= -->
+```
+<div class="portrait">
 
-  <main class="page">
+  <!-- Anam AI Avatar -->
+  <iframe
+    class="avatar-frame"
+    src="https://lab.anam.ai/frame/3ef964c0-2789-4ba5-a734-ddda2cf99ce7"
+    allow="microphone"
+    title="Anam AI Virtual Assistant">
+  </iframe>
 
+  <!-- Visual overlay -->
+  <div class="top-gradient"></div>
 
-    <!-- =====================================
-         STC LOGO
-         ===================================== -->
+  <!-- Desktop label -->
+  <div class="desktop-label">
+    AI Assistant
+  </div>
 
-    <img
-      class="stc-logo"
-      src="stcimages.jpg"
-      alt="stc"
-    >
+</div>
+```
 
-
-    <!-- =====================================
-         FULLSCREEN BUTTON
-         ===================================== -->
-
-    <button
-      id="fullscreenButton"
-      class="fullscreen-button"
-      type="button"
-      aria-label="Full Screen"
-      title="Full Screen"
-    >
-      ⛶
-    </button>
-
-
-    <!-- =====================================
-         AI AGENT
-
-         EXACT SIZE:
-         720 × 480
-         ===================================== -->
-
-    <section
-      id="anamPortrait"
-      class="portrait-container"
-    >
-
-      <div class="anam-crop">
-
-        <iframe
-          src="https://lab.anam.ai/frame/3ef964c0-2789-4ba5-a734-ddda2cf99ce7"
-          width="720"
-          height="480"
-          allow="microphone; fullscreen"
-          allowfullscreen>
-        </iframe>
-
-      </div>
-
-    </section>
-
-
-  </main>
-
-
-  <!-- =======================================
-       FULLSCREEN JAVASCRIPT
-       ======================================= -->
-
-  <script>
-
-    const portrait =
-      document.getElementById("anamPortrait");
-
-
-    const fullscreenButton =
-      document.getElementById("fullscreenButton");
-
-
-    /* =====================================
-       FULLSCREEN BUTTON
-       ===================================== */
-
-    fullscreenButton.addEventListener(
-      "click",
-      async () => {
-
-        try {
-
-          if (!document.fullscreenElement) {
-
-            await portrait.requestFullscreen();
-
-          }
-
-          else {
-
-            await document.exitFullscreen();
-
-          }
-
-        }
-
-        catch (error) {
-
-          console.error(
-            "Fullscreen error:",
-            error
-          );
-
-        }
-
-      }
-    );
-
-
-    /* =====================================
-       FULLSCREEN STATE
-       ===================================== */
-
-    document.addEventListener(
-      "fullscreenchange",
-      () => {
-
-        if (document.fullscreenElement) {
-
-          fullscreenButton.textContent = "✕";
-
-          fullscreenButton.title =
-            "Exit Full Screen";
-
-          fullscreenButton.setAttribute(
-            "aria-label",
-            "Exit Full Screen"
-          );
-
-        }
-
-        else {
-
-          fullscreenButton.textContent = "⛶";
-
-          fullscreenButton.title =
-            "Full Screen";
-
-          fullscreenButton.setAttribute(
-            "aria-label",
-            "Full Screen"
-          );
-
-        }
-
-      }
-    );
-
-  </script>
-
+  </div>
 
 </body>
-
 </html>
