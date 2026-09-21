@@ -135,39 +135,33 @@
     }
 
 
-    /* =========================================
-       9:16 PORTRAIT CONTAINER
-       ========================================= */
+/* =========================================
+   480 × 720 PORTRAIT CONTAINER
+   ========================================= */
 
-    .portrait-container {
+.portrait-container {
 
-      position: relative;
+  position: relative;
 
-      width: min(
-        90vw,
-        calc(92dvh * 9 / 16)
-      );
+  width: 480px;
+  height: 720px;
 
-      aspect-ratio: 9 / 16;
+  overflow: hidden;
 
-      max-height: 92dvh;
+  background: #D3D3D3;
 
-      overflow: hidden;
+  border-radius: 20px;
 
-      background: #D3D3D3;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.30);
 
-      border-radius: 20px;
-
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.30);
-
-      transition:
-        width 0.45s ease,
-        height 0.45s ease,
-        border-radius 0.45s ease,
-        box-shadow 0.45s ease,
-        transform 0.45s ease;
-    }
+  transition:
+    width 0.45s ease,
+    height 0.45s ease,
+    border-radius 0.45s ease,
+    box-shadow 0.45s ease,
+    transform 0.45s ease;
+}
 
 
     /* =========================================
@@ -190,40 +184,32 @@
       border-radius: 20px;
     }
 
+/* =========================================
+   AI AGENT IFRAME
+   FIXED SIZE: 480px × 720px
+   ========================================= */
 
-    /* =========================================
-       AI AGENT IFRAME
-       
-       REDUCED AVATAR SIZE
-       
-       190% gives the AI agent application a wider
-       viewport than the portrait window, reducing
-       the apparent avatar size while keeping the
-       outer frame at 9:16.
-       ========================================= */
+.anam-crop iframe {
 
-    .anam-crop iframe {
+  position: absolute;
 
-      position: absolute;
+  width: 480px;
+  height: 720px;
 
-      width: 190%;
+  left: 50%;
+  top: 50%;
 
-      height: 100%;
+  transform: translate(-50%, -50%);
 
-      left: 50%;
-      top: 0;
+  margin: 0;
+  padding: 0;
 
-      transform: translateX(-50%);
+  border: 0;
 
-      margin: 0;
-      padding: 0;
+  display: block;
 
-      border: 0;
-
-      display: block;
-
-      background: #D3D3D3;
-    }
+  background: #D3D3D3;
+}
 
 
     /* =========================================
